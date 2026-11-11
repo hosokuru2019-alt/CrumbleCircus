@@ -1,10 +1,16 @@
 
-/* ===== 画像の設定(拡張子が違う場合はここだけ直してください。GitHubは大文字小文字を区別します) ===== */
-var EXT_P = ".png.PNG", EXT_D = ".PNG", EXT_H = ".png";
-var NM=["Alice_Crust","Theodore_Bancroft","Molly_Hayward","Leon_Foster","Luka_Sokolov","Lina_Sokolova","Floris_de_Groot","Colette","Ray_Sterling"];
-var IMGS=NM.map(function(n,i){return "images/polaroid_0"+(i+1)+EXT_P});
-var DOS=NM.map(function(n){return ["images/"+n+"_en"+EXT_D,"images/"+n+"_jp"+EXT_D]});
-var HANA="images/hanamaru"+EXT_H;
+/* ===== 画像の設定(GitHubに置いた実際のファイル名に合わせてあります) =====
+   画像は index.html と同じ場所(フォルダ分けなし)に置く前提です。
+   フォルダ分けしたときは、下の DIR を "images/" に変えてください。
+   GitHubは大文字と小文字、スペースも区別します。ファイル名を変えたら、ここも直してください。 */
+var DIR="";
+var PL=["polaroid_01.png.PNG","polaroid_02.png.PNG","polaroid_03.png.PNG","polaroid_04.png.PNG","polaroid_05.png.PNG","polaroid_06.png.PNG","polaroid_07.png.PNG","polaroid_08.png.PNG","polaroid_09.png.PNG"];
+var DS=[["Alice Crust_en.PNG","Alice Crust_jp.PNG"],["Theodore Bancroft_en.PNG","Theodore Bancroft_jp.PNG"],["Molly Hayward_en.PNG","Molly Hayward_jp.PNG"],["Leon Foster_en.PNG","Leon Foster_jp.PNG"],["Luka Sokolov_en.PNG","Luka Sokolov_jp.PNG"],["Lina Sokolova_en.PNG","Lina Sokolova_jp.PNG"],["Floris de Groot_en.PNG","Floris de Groot_jp.PNG"],["Colette_en.png","Colette_jp.PNG"],["Ray Sterling_en.PNG","Ray Sterling_jp.PNG"]];
+var HN="hanamaru.png";
+function U(f){return encodeURI(DIR+f)}
+var IMGS=PL.map(U);
+var DOS=DS.map(function(p){return [U(p[0]),U(p[1])]});
+var HANA=U(HN);
 var N=[["Alice Crust","アリス・クラスト","サーカス団長"],["Theodore Bancroft","セオドア・バンクロフト","設計士"],["Molly Hayward","モリー・ヘイワード","猛獣使い"],["Leon Foster","レオン・フォスター","ライオン"],["Luka Sokolov","ルカ・ソコロフ","ブランコ乗り"],["Lina Sokolova","リナ・ソコロワ","ブランコ乗り"],["Floris de Groot","フローリス・デ・グロート","ピエロ"],["Colette","コレット","売り子"],["Ray Sterling","レイ・スターリング","マジシャン"]];
 var $=function(s){return document.querySelector(s)},ring='<circle cx="50" cy="50" r="46" stroke-dasharray="2 4"/><circle cx="50" cy="50" r="40"/>';
 var K=' stroke="#f6efdc" stroke-width="7" stroke-linejoin="round" paint-order="stroke"',T=function(c,f,y,s){return '<text x="50" y="'+(y||66)+'" class="t" fill="'+f+'"'+(s?' style="font-size:'+s+'px"':'')+'>'+c+'</text>'};
@@ -37,12 +43,12 @@ var CP={t:["#46bccb","#2b6f9a"],y:["#f0cd55","#c9962b"],r:["#d9594f","#8f2a2f"],
 function row(s,k,fs){return '<div class="lr" style="font-size:'+fs+'">'+s.split("").map(function(c,i){var g=CP[k[i%k.length]],f=(i==0&&s[0]=="C"&&fs=="4.6rem")?"1.45em":"1em";return '<span style="background-image:linear-gradient(160deg,'+g[0]+','+g[1]+');rotate:'+((i*37%13)-6)+'deg;translate:0 '+((i*5%9)-4)+'px;font-size:'+f+'">'+c+'</span>'}).join("")+'</div>'}
 $("#lg").innerHTML='<i class="sp1">✦</i><i class="sp2">✦</i><i class="sp3">★</i>'+row("Crumble","tyrbty","3.3rem")+row("Circus","rtyrbt","4.6rem");
 var cv=$("#tv"),cx=cv.getContext("2d"),id=cx.createImageData(64,48);function nz(){for(var i=0;i<id.data.length;i+=4){var v=Math.random()*255|0,c=Math.random()<.1;id.data[i]=c?v:v*.5;id.data[i+1]=v*.8;id.data[i+2]=c?v:v*.9;id.data[i+3]=255}cx.putImageData(id,0,0)}nz();setInterval(nz,110);
-function side(a){document.body.classList.toggle("a",a);$("#lab").innerHTML=a?"A<br>side":"B<br>side";scrollTo(0,0)}
+function side(a){document.body.classList.toggle("a",a);$("#lab").innerHTML=a?"A<br>side":"B<br>side";$("#rl").textContent=a?"◀ B面の世界へ戻ろう":"◀ 設定裏話はこちら";scrollTo(0,0)}
 $("#rec").onclick=function(){var a=!document.body.classList.contains("a");side(a);try{history.replaceState(null,"",a?"#a-side":"#")}catch(e){}};
-var dos,ja,lens;
-function mv(x,y){lens.style.left=x+"px";lens.style.top=y+"px";ja.style.clipPath="circle(92px at "+x+"px "+y+"px)"}
-function op(i){var n=N[i]||["You?","あなた","10人目の団員"];$("#vc").innerHTML=(i<9?'':'<div class="pt"><div style="aspect-ratio:3/4;display:grid;place-items:center;font:700 5rem Fredoka;color:#999;background:#ddd">?</div></div>')+'<h2 style="text-align:center;font-size:1.9rem"><ruby>'+n[0]+'<rt>'+n[1]+'</rt></ruby></h2><p style="text-align:center;color:var(--gold);font:700 1.1rem Fredoka">'+n[2]+'</p>'+(i<9?'<p class="hint">O.Z.M.A職員が書いた公的な調査書です。虫眼鏡を動かすと、英語版が日本語訳に変わります。</p><div class="dos" id="dos"><img class="L" src="'+DOS[i][0]+'" alt=""><img class="L ja" src="'+DOS[i][1]+'" alt=""><div class="lens"></div></div>':'<p style="text-align:center">この席は、あなたのために空けてあります。<br>切符はもう、手元にあるはず。</p>');
-$("#viewer").classList.add("open");document.body.style.overflow="hidden";if(i<9){dos=$("#dos");ja=dos.querySelector(".ja");lens=dos.querySelector(".lens");var f=function(e){var r=dos.getBoundingClientRect();mv(Math.max(0,Math.min(r.width,e.clientX-r.left)),Math.max(0,Math.min(r.height,e.clientY-r.top)))};dos.onpointermove=f;dos.onpointerdown=f;mv(dos.clientWidth/2,dos.clientHeight/3)}}
+var dos,mg,gi,hd,lx=0,ly=0,M=1.6;
+function mv(x,y){var W=dos.clientWidth,H=dos.clientHeight;x=Math.max(0,Math.min(W,x));y=Math.max(0,Math.min(H,y));lx=x;ly=y;mg.style.left=x+"px";mg.style.top=y+"px";var r=gi.parentNode.clientWidth/2;gi.style.width=W*M+"px";gi.style.height=H*M+"px";gi.style.left=(r-x*M)+"px";gi.style.top=(r-y*M)+"px";hd.style.setProperty("--a",(-25+50*x/W)+"deg")}
+function op(i){var n=N[i]||["You?","あなた","10人目の団員"];$("#vc").innerHTML=(i<9?'':'<div class="pt"><div style="aspect-ratio:3/4;display:grid;place-items:center;font:700 5rem Fredoka;color:#999;background:#ddd">?</div></div>')+'<h2 style="text-align:center;font-size:1.9rem"><ruby>'+n[0]+'<rt>'+n[1]+'</rt></ruby></h2><p style="text-align:center;color:var(--gold);font:700 1.1rem Fredoka">'+n[2]+'</p>'+(i<9?'<p class="hint">O.Z.M.A職員が書いた公的な調査書です。虫眼鏡の持ち手をドラッグすると、レンズの部分が日本語訳に変わり、少し拡大されます。</p><div class="dw"><div class="dos" id="dos"><img class="L" src="'+DOS[i][0]+'" alt=""></div><div class="mg" id="mg"><div class="gl"><img id="gi" src="'+DOS[i][1]+'" alt=""></div><div class="hd" id="hd"></div></div></div>':'<p style="text-align:center">この席は、あなたのために空けてあります。<br>切符はもう、手元にあるはず。</p>');
+$("#viewer").classList.add("open");document.body.style.overflow="hidden";if(i<9){dos=$("#dos");mg=$("#mg");gi=$("#gi");hd=$("#hd");var ox=0,oy=0;hd.onpointerdown=function(e){e.preventDefault();hd.setPointerCapture(e.pointerId);var r=dos.getBoundingClientRect();ox=e.clientX-r.left-lx;oy=e.clientY-r.top-ly;hd.onpointermove=function(e){var r=dos.getBoundingClientRect();mv(e.clientX-r.left-ox,e.clientY-r.top-oy)}};hd.onpointerup=hd.onpointercancel=function(){hd.onpointermove=null};mv(dos.clientWidth/2,dos.clientHeight*.33)}}
 function cl(w){$("#"+w).classList.remove("open");document.body.style.overflow="";try{history.replaceState(null,"",location.pathname)}catch(e){}}
 document.querySelectorAll(".vx").forEach(function(b){b.onclick=function(){cl(b.dataset.x)}});
 $("#pg").onclick=function(e){var b=e.target.closest(".pl");if(b){var i=+b.dataset.i;try{history.replaceState(null,"","#char-"+(i+1))}catch(x){}op(i)}};
