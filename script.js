@@ -1,16 +1,16 @@
 
-/* ===== 画像の設定(GitHubに置いた実際のファイル名に合わせてあります) =====
-   画像は index.html と同じ場所(フォルダ分けなし)に置く前提です。
-   フォルダ分けしたときは、下の DIR を "images/" に変えてください。
-   GitHubは大文字と小文字、スペースも区別します。ファイル名を変えたら、ここも直してください。 */
-var DIR="";
-var PL=["polaroid_01.png.PNG","polaroid_02.png.PNG","polaroid_03.png.PNG","polaroid_04.png.PNG","polaroid_05.png.PNG","polaroid_06.png.PNG","polaroid_07.png.PNG","polaroid_08.png.PNG","polaroid_09.png.PNG"];
-var DS=[["Alice Crust_en.PNG","Alice Crust_jp.PNG"],["Theodore Bancroft_en.PNG","Theodore Bancroft_jp.PNG"],["Molly Hayward_en.PNG","Molly Hayward_jp.PNG"],["Leon Foster_en.PNG","Leon Foster_jp.PNG"],["Luka Sokolov_en.PNG","Luka Sokolov_jp.PNG"],["Lina Sokolova_en.PNG","Lina Sokolova_jp.PNG"],["Floris de Groot_en.PNG","Floris de Groot_jp.PNG"],["Colette_en.png","Colette_jp.PNG"],["Ray Sterling_en.PNG","Ray Sterling_jp.PNG"]];
-var HN="hanamaru.png";
-function U(f){return encodeURI(DIR+f)}
-var IMGS=PL.map(U);
-var DOS=DS.map(function(p){return [U(p[0]),U(p[1])]});
-var HANA=U(HN);
+/* ===== 画像の設定 =====
+   拡張子(EXT_P=ポラロイド, EXT_D=調査書, EXT_H=はなまる太郎)と団員名(NM)を、ご自身のファイル名に合わせて書き換えられます。
+   読み込みに失敗したときは、自動で別の候補(フォルダ違い・スペースと_の違い・.PNG/.pngの違い)を順番に試します。 */
+var EXT_P=".png.PNG",EXT_D=".PNG",EXT_H=".png";
+var NM=["Alice_Crust","Theodore_Bancroft","Molly_Hayward","Leon_Foster","Luka_Sokolov","Lina_Sokolova","Floris_de_Groot","Colette","Ray_Sterling"];
+var CAND={};
+function cands(name,suf,ext){var o=[];["images/",""].forEach(function(d){[name,name.replace(/_/g," ")].forEach(function(s){[ext,".PNG",".png",".png.PNG"].forEach(function(x){var p=d+s+suf+x;if(o.indexOf(p)<0)o.push(p)})})});return o}
+function U(l){var f=encodeURI(l[0]);CAND[f]=l.slice(1).map(encodeURI);return f}
+addEventListener("error",function(e){var t=e.target;if(!t||t.tagName!="IMG")return;var q=t._q||(t._q=(CAND[t.getAttribute("src")]||[]).slice());if(q.length)t.src=q.shift()},true);
+var IMGS=NM.map(function(n,i){return U(cands("polaroid_0"+(i+1),"",EXT_P))});
+var DOS=NM.map(function(n){return [U(cands(n,"_en",EXT_D)),U(cands(n,"_jp",EXT_D))]});
+var HANA=U(cands("hanamaru","",EXT_H));
 var N=[["Alice Crust","アリス・クラスト","サーカス団長"],["Theodore Bancroft","セオドア・バンクロフト","設計士"],["Molly Hayward","モリー・ヘイワード","猛獣使い"],["Leon Foster","レオン・フォスター","ライオン"],["Luka Sokolov","ルカ・ソコロフ","ブランコ乗り"],["Lina Sokolova","リナ・ソコロワ","ブランコ乗り"],["Floris de Groot","フローリス・デ・グロート","ピエロ"],["Colette","コレット","売り子"],["Ray Sterling","レイ・スターリング","マジシャン"]];
 var $=function(s){return document.querySelector(s)},ring='<circle cx="50" cy="50" r="46" stroke-dasharray="2 4"/><circle cx="50" cy="50" r="40"/>';
 var K=' stroke="#f6efdc" stroke-width="7" stroke-linejoin="round" paint-order="stroke"',T=function(c,f,y,s){return '<text x="50" y="'+(y||66)+'" class="t" fill="'+f+'"'+(s?' style="font-size:'+s+'px"':'')+'>'+c+'</text>'};
